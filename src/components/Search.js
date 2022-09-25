@@ -4,7 +4,20 @@ import wikiResult from "../API/wikipedia";
 
 const Search = () => {
   const [searchTerm,setSearchTerm] = useState('hello')
+  const [debouncedTerm, setdebouncedTerm] = useState(null)
   const [responseSummary,setResponseSummary] = useState([]) 
+  useEffect(()=> {
+    const debouncedTimeout = setTimeout(() => {
+      if (searchTerm) {
+        search()
+      }
+    }, 1000);
+
+    return (()=> {
+      clearTimeout(debouncedTimeout)
+    })
+  },[debouncedTerm])
+
   useEffect(()=> {
     const search = async () => {
       const response = await axios.get('https://en.wikipedia.org/w/api.php',{
@@ -19,10 +32,11 @@ const Search = () => {
       setResponseSummary(response.data.query.search)
       console.log(response)
     }
+    if (searchTerm && !search.response) {
+      search()
+    }
     const searchTimeout = setTimeout(()=>{
-      if (searchTerm) {
-        search()
-      }
+      search()
     },500)
     return(()=> {
       clearTimeout(searchTimeout)
