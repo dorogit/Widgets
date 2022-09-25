@@ -19,9 +19,14 @@ const Search = () => {
       setResponseSummary(response.data.query.search)
       console.log(response)
     }
-    if (searchTerm) {
-      search()
-    }
+    const searchTimeout = setTimeout(()=>{
+      if (searchTerm) {
+        search()
+      }
+    },500)
+    return(()=> {
+      clearTimeout(searchTimeout)
+    })
   },[searchTerm])
 
   const renderedList = responseSummary.map((response) => {
