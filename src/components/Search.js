@@ -5,7 +5,6 @@ import wikiResult from "../API/wikipedia";
 const Search = () => {
   const [searchTerm,setSearchTerm] = useState('hello')
   const [responseSummary,setResponseSummary] = useState([]) 
-  console.log(responseSummary)
   useEffect(()=> {
     const search = async () => {
       const response = await axios.get('https://en.wikipedia.org/w/api.php',{
@@ -18,6 +17,7 @@ const Search = () => {
         }
       })
       setResponseSummary(response.data.query.search)
+      console.log(response)
     }
     if (searchTerm) {
       search()
@@ -26,8 +26,18 @@ const Search = () => {
 
   const renderedList = responseSummary.map((response) => {
     return (
-      <div>
-        {response.snippet}
+      <div className="item" key={response.pageid}>
+        <div className="right floated content">
+          <a className="ui button" href={`https://en.wikipedia.org?curid=${response.pageid}/`}>
+            Go
+          </a>
+        </div>
+        <div className="content">
+          <div className="header">
+            {response.title}
+          </div>
+          <span dangerouslySetInnerHTML={{__html: response.snippet}} />
+        </div>
       </div>
     )
   })
@@ -39,7 +49,9 @@ const Search = () => {
           Enter search term
         </label>
         <input value = {searchTerm} className="input" onChange={(entered) =>setSearchTerm(entered.target.value)}/>
-        {renderedList}
+        <div className="ui celled list">
+          {renderedList}
+        </div>
       </div>
     </div>
   )
