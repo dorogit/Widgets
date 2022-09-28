@@ -6,12 +6,18 @@ const Dropdown = ({options,activeOption,setactiveOption}) => {
   const ref = useRef()
 
   useEffect(()=>{
-    document.body.addEventListener('click', (event)=> {
-      if (ref.current.contains(event.target)) {
-        return;
-      } 
-      setdropOpen(false)
-    })
+
+    const dropdown = (event) =>{
+    if (ref.current.contains(event.target)) {
+      return;
+    }
+    setdropOpen(false)
+  }
+
+    document.body.addEventListener('click', dropdown)
+    return () => {
+      document.body.removeEventListener('click', dropdown)
+    }
   },[])
 
   const renderedOptions = options.map((option)=> {

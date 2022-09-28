@@ -33,14 +33,18 @@ const options = [
 ]
 export default () => {
   const [activeOption, setactiveOption] = useState([])
+  const [dropDown,setDropDown] = useState(true)
   return (
     <div>
+      <button onClick={() => {setDropDown(!dropDown)}}>Toggle</button>
       <br/>
+      {dropDown ?
       <Dropdown 
       options = {options}
       activeOption = {activeOption}
       setactiveOption = {setactiveOption}
-      />
+      /> : null
+      }
     </div>
   )
 }
