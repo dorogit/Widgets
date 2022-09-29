@@ -1,8 +1,7 @@
-import userEvent from "@testing-library/user-event";
 import React, { useEffect, useRef, useState } from "react";
 
-const Dropdown = ({options,activeOption,setactiveOption}) => {
-  const [dropOpen,setdropOpen] = useState(null)
+const Dropdown = ({options,activeOption,setActiveOption, label}) => {
+  const [dropOpen,setDropOpen] = useState(null)
   const ref = useRef()
 
   useEffect(()=>{
@@ -11,7 +10,7 @@ const Dropdown = ({options,activeOption,setactiveOption}) => {
     if (ref.current.contains(event.target)) {
       return;
     }
-    setdropOpen(false)
+    setDropOpen(false)
   }
 
     document.body.addEventListener('click', dropdown)
@@ -25,7 +24,7 @@ const Dropdown = ({options,activeOption,setactiveOption}) => {
       return null;
     }
     return (
-     <div key={option.value} className="item" onClick={()=> {setactiveOption(option)}}>
+     <div key={option.value} className="item" onClick={()=> {setActiveOption(option)}}>
       {option.label}
      </div>
     )
@@ -33,8 +32,8 @@ const Dropdown = ({options,activeOption,setactiveOption}) => {
   return (
     <div ref = {ref} className="ui form">
       <div className="ui field">
-       <label className="label">Select a color</label>
-       <div onClick={()=>{setdropOpen(!dropOpen)}} className= {`ui selection dropdown ${dropOpen ? 'active' : ''}`}>
+       <label className="label"> {label} </label>
+       <div onClick={()=>{setDropOpen(!dropOpen)}} className= {`ui selection dropdown ${dropOpen ? 'active' : ''}`}>
         <i className="dropdown icon"></i>
         <div className="text"> {activeOption.label} </div>
         <div className= {`menu ${dropOpen ? 'visible transition' : ''}`}>
